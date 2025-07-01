@@ -166,8 +166,8 @@ VALUES (
 ) ON CONFLICT (user_id) DO NOTHING;
 
 -- 3. Admin uchun standart sozlamalarni yaratish
-INSERT INTO settings (user_id, theme, language)
-VALUES (1, 'light', 'uz')
+INSERT INTO settings (user_id, theme, language, notifications_email, notifications_push, privacy_profile_visibility, display_posts_per_page)
+VALUES (1, 'light', 'uz', true, true, 'public', 10)
 ON CONFLICT (user_id) DO NOTHING;
 
 -- Jadvallar uchun ID ketma-ketligini yangilash

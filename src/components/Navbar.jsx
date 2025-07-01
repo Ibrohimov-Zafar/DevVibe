@@ -78,7 +78,7 @@ const Navigation = () => {
             <Link href="/" onClick={closeMenu}>
               <div className="logo-container">
                 <div className="logo-icon">💻</div>
-                <span className="logo-text">Ibragimov_Dev</span>
+                <span className="logo-text">DevVibe</span>
                 <div className="logo-pulse"></div>
               </div>
             </Link>
@@ -122,7 +122,7 @@ const Navigation = () => {
                       className={`w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-slate-700 flex items-center gap-3 ${theme === 'light' ? 'text-blue-600 bg-blue-50 dark:bg-blue-900/20' : 'text-gray-700 dark:text-slate-300'}`}
                     >
                       <Sun className="w-4 h-4" />
-                      Yorug' tema
+                      Light
                     </button>
                     <button
                       onClick={() => {
@@ -132,7 +132,7 @@ const Navigation = () => {
                       className={`w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-slate-700 flex items-center gap-3 ${theme === 'dark' ? 'text-blue-600 bg-blue-50 dark:bg-blue-900/20' : 'text-gray-700 dark:text-slate-300'}`}
                     >
                       <Moon className="w-4 h-4" />
-                      Qorong'u tema
+                      Dark
                     </button>
                     <button
                       onClick={() => {
@@ -142,7 +142,7 @@ const Navigation = () => {
                       className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-slate-700 flex items-center gap-3 text-gray-700 dark:text-slate-300"
                     >
                       <Monitor className="w-4 h-4" />
-                      Tizim
+                      System
                     </button>
                   </div>
                 )}
@@ -188,7 +188,7 @@ const Navigation = () => {
         <div className="mobile-menu-header">
           <div className="mobile-logo">
             <div className="logo-icon">✨</div>
-            <span>ModernUI</span>
+            <span>DevVibe</span>
           </div>
           <button className="close-btn" onClick={closeMenu}>
             <span>✕</span>

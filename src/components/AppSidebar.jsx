@@ -73,10 +73,10 @@ export default function AppSidebar() {
   const { profile } = useProfile(); // Ma'lumotni context'dan olamiz
 
   return (
-    <aside className="fixed top-0 left-0 h-screen w-64 bg-gradient-to-b from-white to-gray-50 dark:from-slate-900 dark:to-slate-800 border-r border-gray-200 dark:border-slate-700 shadow-lg transition-all duration-300 md:block hidden z-40">
+    <aside className="fixed top-0 left-0 h-screen w-64 bg-gradient-to-b from-white to-gray-50 dark:bg-slate-900 border-r border-gray-200 dark:border-slate-700 shadow-lg transition-all duration-300 md:block hidden z-40">
       <div className="flex flex-col h-full">
         <div className="p-6 border-b border-gray-200 dark:border-slate-700">
-          <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent dark:bg-none dark:text-white">
             🚹Dashboard
           </h1>
           <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">
@@ -89,9 +89,9 @@ export default function AppSidebar() {
               <li key={item.title}>
                 <Link
                   href={item.url}
-                  className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-gray-700 dark:text-slate-200 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/30 dark:hover:to-purple-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200 group"
+                  className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-gray-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-slate-700/50 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200 group"
                 >
-                  <item.icon className="h-5 w-5 group-hover:scale-110 transition-transform duration-200" />
+                  <item.icon className="h-5 w-5 text-gray-500 dark:text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200" />
                   <span>{item.title}</span>
                 </Link>
               </li>
@@ -99,7 +99,7 @@ export default function AppSidebar() {
           </ul>
         </nav>
         <div className="p-4 border-t border-gray-200 dark:border-slate-700">
-          <div className="flex items-center gap-3 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg p-3 border dark:border-slate-600">
+          <div className="flex items-center gap-3 bg-gradient-to-r from-blue-50 to-purple-50 dark:bg-slate-800/50 rounded-lg p-3 border dark:border-slate-600">
             <Image
               src={profile?.avatar || '/zafar.jpg'}
               alt="Avatar"
@@ -108,7 +108,7 @@ export default function AppSidebar() {
               className="rounded-full object-cover"
             />
             <div>
-              <p className="text-sm text-gray-600 dark:text-slate-300 font-medium">
+              <p className="text-sm text-gray-800 dark:text-slate-200 font-medium">
                 {profile ? profile.name : 'Yuklanmoqda...'}
               </p>
               <p className="text-xs text-gray-500 dark:text-slate-400 mt-1">

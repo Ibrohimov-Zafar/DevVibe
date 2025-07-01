@@ -5,8 +5,9 @@ import { Globe } from "@/components/magicui/globe";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { LanguageProvider } from '@/context/LanguageContext';
 
-export default function Home() {
+function HomePageContent() {
   const [portfolios, setPortfolios] = useState([]);
   const [posts, setPosts] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
@@ -100,7 +101,7 @@ export default function Home() {
 
   return (
     <>
-      <Navigation />
+      <Navigation  />
 
       {/* Revolutionary 3D Hero Section */}
       <section className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-purple-950 relative overflow-hidden pt-20">
@@ -157,9 +158,9 @@ export default function Home() {
             {/* Floating Badge with 3D Effect */}
             <div className="inline-flex items-center gap-3 bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-xl border border-white/20 text-white px-8 py-4 rounded-full text-sm font-medium mb-12 shadow-2xl transform-gpu hover:scale-105 transition-all duration-500">
               <span className="text-2xl animate-wave">👋</span>
-              <span className="font-light">Salom, men</span>
+              <span className="font-light">Salom, Biz</span>
               <span className="font-bold text-cyan-400">
-                Zafar Ibragimov
+                DevVibe Jamoasi
               </span>
             </div>
 
@@ -172,7 +173,7 @@ export default function Home() {
                   transform: `perspective(1000px) rotateX(${mousePosition.y * 0.05}deg) rotateY(${mousePosition.x * 0.05}deg)`,
                 }}
               >
-                FULLSTACK
+                DevVibe
               </span>
               <span
                 className="block text-cyan-400 transform-gpu relative"
@@ -180,7 +181,7 @@ export default function Home() {
                   transform: `perspective(1000px) rotateX(${-mousePosition.y * 0.05}deg) rotateY(${-mousePosition.x * 0.05}deg)`,
                 }}
               >
-                DEVELOPER
+                TEAMS
                 <div className="absolute -top-8 -right-12 text-4xl animate-float-fast">✨</div>
                 <div className="absolute -bottom-4 -left-8 text-3xl animate-bounce-slow">🚀</div>
               </span>
@@ -229,7 +230,7 @@ export default function Home() {
               >
                 <span className="flex items-center justify-center gap-3">
                   <span className="text-2xl group-hover:animate-spin">💼</span>
-                  Ishlarimni Ko'ring
+                  Ishlarimizni Ko'ring
                 </span>
               </a>
             </div>
@@ -334,7 +335,7 @@ export default function Home() {
             </div>
             <h2 className="text-6xl md:text-7xl font-black text-gray-900 dark:text-white mb-6">
               <span className="text-blue-600 dark:text-cyan-400">
-                Ko'nikmalarim
+                 Professional Skills
               </span>
             </h2>
             <p className="text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto font-light">
@@ -528,7 +529,7 @@ export default function Home() {
             </div>
             <h2 className="text-6xl md:text-7xl font-black text-white mb-6">
               <span className="text-purple-400">
-                Shedevrlar
+                Portfolio Loyihalarimiz
               </span>
             </h2>
             <p className="text-2xl text-gray-300 max-w-3xl mx-auto font-light">
@@ -643,7 +644,7 @@ export default function Home() {
                 Mijozlar Fikri
               </div>
               <h2 className="text-5xl font-bold mb-4">
-                Nima <span className="text-white">Deyishadi</span>
+               Mijozlarimiz biz haqimizda Nima <span className="text-white">Deyishadi</span>
               </h2>
             </div>
 
@@ -709,7 +710,7 @@ export default function Home() {
               Blog
             </div>
             <h2 className="text-5xl font-bold text-gray-900 dark:text-white mb-4">
-              So'nggi{" "}
+              Jamoamiz haqida so'nggi{" "}
               <span className="text-green-600 dark:text-green-400">
                 Maqolalar
               </span>
@@ -843,7 +844,7 @@ export default function Home() {
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/20 transition-all duration-300">
               <div className="text-3xl mb-2">📧</div>
               <div className="font-semibold">Email</div>
-              <div style={{ width: "0.3px" }} className="text-sm opacity-80">
+              <div className="text-sm opacity-80 break-all">
                 ibragimovzafar001@gmail.com
               </div>
             </div>
@@ -1153,5 +1154,12 @@ export default function Home() {
       `}</style>
     </>
   );
-} 
- 
+}
+
+export default function Home() {
+  return (
+    <LanguageProvider>
+      <HomePageContent />
+    </LanguageProvider>
+  );
+}

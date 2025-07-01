@@ -80,5 +80,6 @@ export const STORAGE_KEYS = {
   PROJECTS: 'projectsData',
   SKILLS: 'skillsData',
   PROFILE: 'profileData',
-  SETTINGS: 'settingsData'
+  SETTINGS: 'settingsData',
+  LANGUAGE: 'language'
 };

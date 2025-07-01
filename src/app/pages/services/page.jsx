@@ -371,12 +371,7 @@ export default function ServicesPage() {
 
                     {/* Price and Duration */}
                     <div className="grid grid-cols-2 gap-4 mb-6">
-                      <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/30 p-4 rounded-xl">
-                        <div className="text-sm text-gray-600 dark:text-slate-400">💰 Narx</div>
-                        <div className="text-lg font-bold text-blue-600 dark:text-cyan-400">
-                          {service.price}
-                        </div>
-                      </div>
+                       
                       <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 p-4 rounded-xl">
                         <div className="text-sm text-gray-600 dark:text-slate-400">⏱️ Muddat</div>
                         <div className="text-lg font-bold text-purple-600 dark:text-purple-400">

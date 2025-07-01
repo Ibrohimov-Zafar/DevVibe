@@ -1,0 +1,19 @@
+{
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "portfolio": "Portfolio",
+    "about": "About Us",
+    "contact": "Contact",
+    "login": "Login"
+  },
+  "theme": {
+    "light": "Light Theme",
+    "dark": "Dark Theme",
+    "system": "System",
+    "select_theme": "Select Theme"
+  },
+  "language": {
+    "select": "Select Language"
+  }
+}

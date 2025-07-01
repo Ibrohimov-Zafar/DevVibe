@@ -1,0 +1,19 @@
+{
+  "nav": {
+    "home": "Bosh sahifa",
+    "services": "Xizmatlar",
+    "portfolio": "Portfolio",
+    "about": "Biz haqimizda",
+    "contact": "Aloqa",
+    "login": "Kirish"
+  },
+  "theme": {
+    "light": "Yorug' tema",
+    "dark": "Qorong'u tema",
+    "system": "Tizim",
+    "select_theme": "Tema tanlang"
+  },
+  "language": {
+    "select": "Tilni tanlang"
+  }
+}

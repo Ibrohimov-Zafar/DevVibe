@@ -1,8 +1,7 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Navigation from "@/components/Navbar";
-import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast"; // Toaster'ni import qilamiz
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -10,18 +9,24 @@ export default function ContactPage() {
     email: "",
     phone: "",
     subject: "",
-    message: "",
-    service: "",
+    service: "Web Development",
     budget: "",
+    message: "",
   });
-
   const [loading, setLoading] = useState(false);
-  const [activeContact, setActiveContact] = useState("form");
+  const [success, setSuccess] = useState(null);
+  const [error, setError] = useState(null);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const loadingToast = toast.loading("Xabar yuborilmoqda...");
+    setSuccess(null);
+    setError(null);
 
     try {
       const response = await fetch("/api/contact", {
@@ -31,429 +36,393 @@ export default function ContactPage() {
       });
 
       const result = await response.json();
-      toast.dismiss(loadingToast);
 
       if (result.success) {
-        toast.success("✅ Xabaringiz muvaffaqiyatli yuborildi!");
+        setSuccess(
+          "Xabaringiz muvaffaqiyatli yuborildi! Tez orada siz bilan bog'lanamiz."
+        );
         setFormData({
           name: "",
           email: "",
           phone: "",
           subject: "",
-          message: "",
-          service: "",
+          service: "Web Development",
           budget: "",
+          message: "",
         });
       } else {
-        toast.error(`❌ Xatolik: ${result.error || "Noma'lum xato"}`);
+        setError(
+          result.error ||
+            "Xabar yuborishda xatolik yuz berdi. Iltimos, keyinroq qayta urinib ko'ring."
+        );
       }
-    } catch (error) {
-      toast.dismiss(loadingToast);
-      toast.error("❌ Xabarni yuborishda kutilmagan xatolik yuz berdi.");
-      console.error(error);
+    } catch (err) {
+      setError("Server bilan bog'lanishda xatolik. Internet ulanishingizni tekshiring.");
     } finally {
       setLoading(false);
     }
   };
 
-  const contactMethods = [
-    {
-      id: "email",
-      title: "Email",
-      description: "Bizga yozing",
-      value: "ibragimovzafar001@gmail.com",
-      icon: "📧",
-      color: "blue",
-      action: "mailto:ibragimovzafar001@gmail.com",
-    },
-    {
-      id: "phone",
-      title: "Telefon",
-      description: "Qo'ng'iroq qiling",
-      value: "+998 88 000 14 29",
-      icon: "📱",
-      color: "green",
-      action: "tel:+998901234567",
-    },
-    {
-      id: "telegram",
-      title: "Telegram",
-      description: "Tezkor javob",
-      value: "@Ibragimov_Zafar",
-      icon: "💬",
-      color: "purple",
-      action: "https://t.me/Ibragimov_Zafar",
-    },
-    {
-      id: "location",
-      title: "Joylashuv",
-      description: "Bizning manzil",
-      value: "Toshkent, O'zbekiston",
-      icon: "📍",
-      color: "red",
-      action: "https://maps.google.com",
-    },
-  ];
+  // On-scroll animation effect
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
 
-  const faqs = [
-    {
-      question: "Loyiha qancha vaqt oladi?",
-      answer:
-        "Loyiha murakkabligiga qarab 1-12 hafta vaqt ketishi mumkin. Oddiy landing page 1-2 hafta, murakkab web aplikatsiya 8-12 hafta.",
-    },
-    {
-      question: "Narxlar qancha?",
-      answer:
-        "Narxlar loyiha murakkabligiga qarab $300 dan $10,000 gacha. Bepul maslahat va taklif uchun bog'laning.",
-    },
-    {
-      question: "Qo'llab-quvvatlash xizmati bormi?",
-      answer:
-        "Ha, loyiha topshiruvdan keyin 3 oy bepul qo'llab-quvvatlash va keyin oylik xizmat to'lovi bilan.",
-    },
-    {
-      question: "Qanday texnologiyalar ishlatiladi?",
-      answer:
-        "React, Next.js, Node.js, MongoDB, PostgreSQL va boshqa zamonaviy texnologiyalar.",
-    },
-  ];
+    const elements = document.querySelectorAll(".animate-on-scroll");
+    elements.forEach((el) => observer.observe(el));
+
+    return () => {
+      elements.forEach((el) => observer.unobserve(el));
+    };
+  }, []);
 
   return (
     <>
-      <Toaster position="top-center" /> {/* Bildirishnomalar uchun */}
       <Navigation />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 pt-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-4 py-2 rounded-full text-sm font-medium mb-4">
-              <span>📞</span>
-              Bog'lanish
-            </div>
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-slate-100 mb-6">
-              <span className="text-gray-900 dark:text-slate-100">Keling</span>
-              <br />
-              Gaplashaylik
+      <div className="bg-gradient-to-b from-slate-900 via-blue-950 to-slate-900 text-white overflow-x-hidden">
+        {/* Hero Section */}
+        <section className="relative min-h-[60vh] flex items-center justify-center text-center pt-20 px-4 animate-fade-in">
+          <div className="absolute inset-0 bg-grid-blue-500/10 [mask-image:linear-gradient(to_bottom,white_5%,transparent_80%)]"></div>
+          <div className="absolute inset-0 z-0">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-pink-600/10 rounded-full blur-3xl animate-pulse-slow"></div>
+          </div>
+          <div className="relative z-10">
+            <h1 className="text-5xl md:text-7xl font-black mb-4 animate-fade-in-up">
+              Aloqada Bo'ling
             </h1>
-            <p className="text-xl text-gray-600 dark:text-slate-300 max-w-3xl mx-auto">
-              Loyihangiz haqida gaplashishga tayyor. Qo'ng'iroq qiling, yozing
-              yoki to'g'ridan-to'g'ri kelishingiz mumkin.
+            <p
+              className="max-w-3xl mx-auto text-lg text-slate-300 leading-relaxed animate-fade-in-up"
+              style={{ animationDelay: "0.3s" }}
+            >
+              G'oyalaringizni hayotga tatbiq etish uchun shu yerdaman. Keling,
+              loyihangizni muhokama qilamiz va ajoyib natijalarga erishamiz.
             </p>
           </div>
+        </section>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-            {/* Contact Methods */}
-            <div className="lg:col-span-1">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                💬 Bog'lanish Usullari
+        {/* Contact Form & Info Section */}
+        <section className="py-24 px-4">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+            {/* Contact Info */}
+            <div className="animate-on-scroll animate-fade-in-right">
+              <h2 className="text-3xl font-bold mb-8 text-cyan-400">
+                Bog'lanish Ma'lumotlari
               </h2>
-
-              <div className="space-y-4">
-                {contactMethods.map((method) => (
-                  <a
-                    key={method.id}
-                    href={method.action}
-                    target={
-                      method.action.startsWith("http") ? "_blank" : "_self"
-                    }
-                    rel={
-                      method.action.startsWith("http")
-                        ? "noopener noreferrer"
-                        : ""
-                    }
-                    className={`block bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-l-4 border-${method.color}-500`}
-                  >
-                    <div className="flex items-start gap-4">
-                      <div
-                        className={`text-3xl bg-${method.color}-100 p-3 rounded-full`}
-                      >
-                        {method.icon}
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-gray-800 mb-1">
-                          {method.title}
-                        </h3>
-                        <p className="text-gray-600 text-sm mb-2">
-                          {method.description}
-                        </p>
-                        <p className={`font-medium text-${method.color}-600`}>
-                          {method.value}
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                ))}
-              </div>
-
-              {/* Quick Stats */}
-              <div className="mt-8 bg-white p-6 rounded-xl shadow-lg">
-                <h3 className="font-semibold text-gray-800 mb-4">
-                  ⚡ Tezkor Ma'lumot
-                </h3>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <span className="text-green-500">✓</span>
-                    <span className="text-sm text-gray-600">
-                      24 soat ichida javob
-                    </span>
+              <p className="text-slate-300 mb-12">
+                Savollaringiz bormi yoki loyiha taklif qilmoqchimisiz? Quyidagi
+                ma'lumotlar orqali men bilan bog'laning yoki formani to'ldiring.
+              </p>
+              <div className="space-y-8">
+                <div className="flex items-start gap-4">
+                  <div className="bg-white/10 p-4 rounded-full text-cyan-400 text-2xl">
+                    📧
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-green-500">✓</span>
-                    <span className="text-sm text-gray-600">
-                      Bepul maslahat
-                    </span>
+                  <div>
+                    <h3 className="text-xl font-semibold">Elektron Pochta</h3>
+                    <a
+                      href="mailto:ibragimovzafar001@gmail.com"
+                      className="text-slate-300 hover:text-cyan-400 transition-colors"
+                    >
+                      ibragimovzafar001@gmail.com
+                    </a>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-green-500">✓</span>
-                    <span className="text-sm text-gray-600">
-                      Professional yondashuv
-                    </span>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="bg-white/10 p-4 rounded-full text-cyan-400 text-2xl">
+                    📱
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold">Telefon</h3>
+                    <a
+                      href="tel:+998880001429"
+                      className="text-slate-300 hover:text-cyan-400 transition-colors"
+                    >
+                      +998 88 000 14 29
+                    </a>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="bg-white/10 p-4 rounded-full text-cyan-400 text-2xl">
+                    💬
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold">Telegram</h3>
+                    <a
+                      href="https://t.me/zafaribragimov"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-slate-300 hover:text-cyan-400 transition-colors"
+                    >
+                      @zafaribragimov
+                    </a>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="bg-white/10 p-4 rounded-full text-cyan-400 text-2xl">
+                    📍
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold">Manzil</h3>
+                    <p className="text-slate-300">Toshkent, O'zbekiston</p>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Contact Form */}
-            <div className="lg:col-span-2">
-              <div className="bg-white rounded-2xl shadow-xl p-8">
-                <div className="flex items-center gap-4 mb-6">
-                  <button
-                    onClick={() => setActiveContact("form")}
-                    className={`px-4 py-2 rounded-lg font-medium transition ${
-                      activeContact === "form"
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                    }`}
-                  >
-                    📝 Xabar Yuborish
-                  </button>
-                  <button
-                    onClick={() => setActiveContact("meeting")}
-                    className={`px-4 py-2 rounded-lg font-medium transition ${
-                      activeContact === "meeting"
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                    }`}
-                  >
-                    📅 Uchrashuv
-                  </button>
-                </div>
-
-                {activeContact === "form" ? (
-                  <>
-                    <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                      📝 Bizga Yozing
-                    </h2>
-
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <input
-                          type="text"
-                          placeholder="Ismingiz *"
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          value={formData.name}
-                          onChange={(e) =>
-                            setFormData({ ...formData, name: e.target.value })
-                          }
-                          required
-                        />
-                        <input
-                          type="email"
-                          placeholder="Email manzilingiz *"
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          value={formData.email}
-                          onChange={(e) =>
-                            setFormData({ ...formData, email: e.target.value })
-                          }
-                          required
-                        />
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <input
-                          type="tel"
-                          placeholder="Telefon raqamingiz"
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          value={formData.phone}
-                          onChange={(e) =>
-                            setFormData({ ...formData, phone: e.target.value })
-                          }
-                        />
-                        <select
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          value={formData.service}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              service: e.target.value,
-                            })
-                          }
-                        >
-                          <option value="">Xizmat turini tanlang</option>
-                          <option value="web-development">
-                            Web Development
-                          </option>
-                          <option value="mobile-app">Mobile App</option>
-                          <option value="ecommerce">E-commerce</option>
-                          <option value="api-development">
-                            API Development
-                          </option>
-                          <option value="ui-ux-design">UI/UX Design</option>
-                          <option value="consulting">Telegram Bot</option>
-                          <option value="consulting">No code</option>
-                          <option value="consulting">Consulting</option>
-                        </select>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <input
-                          type="text"
-                          placeholder="Mavzu *"
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          value={formData.subject}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              subject: e.target.value,
-                            })
-                          }
-                          required
-                        />
-                        <select
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          value={formData.budget}
-                          onChange={(e) =>
-                            setFormData({ ...formData, budget: e.target.value })
-                          }
-                        >
-                          <option value="">Budjet oralig'i</option>
-                          <option value="$500-1000">$500 - $1,000</option>
-                          <option value="$1000-3000">$1,000 - $3,000</option>
-                          <option value="$3000-5000">$3,000 - $5,000</option>
-                          <option value="$5000+">$5,000+</option>
-                        </select>
-                      </div>
-
-                      <textarea
-                        placeholder="Loyiha haqida batafsil yozing... *"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        rows="5"
-                        value={formData.message}
-                        onChange={(e) =>
-                          setFormData({ ...formData, message: e.target.value })
-                        }
-                        required
-                      />
-
-                      <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-6 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        {loading ? "⏳ Yuborilmoqda..." : "📤 Xabar Yuborish"}
-                      </button>
-                    </form>
-                  </>
-                ) : (
-                  <div className="text-center py-12">
-                    <div className="text-6xl mb-6">📅</div>
-                    <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                      Uchrashuv Belgilash
-                    </h2>
-                    <p className="text-gray-600 mb-8">
-                      Loyihangizni batafsil muhokama qilish uchun video call
-                      yoki offline uchrashuvni rejalashtiraylik.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                      <a
-                        href="https://calendly.com/zafaribragimov"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-300"
-                      >
-                        📅 Online Uchrashuv
-                      </a>
-                      <a
-                        href="tel:+998901234567"
-                        className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-6 py-3 rounded-lg font-semibold transition duration-300"
-                      >
-                        📞 Qo'ng'iroq Qiling
-                      </a>
-                    </div>
+            <div className="bg-slate-800/50 backdrop-blur-md p-8 md:p-12 rounded-2xl border border-white/10 shadow-2xl shadow-blue-500/10 animate-on-scroll animate-fade-in-left">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium text-slate-300 mb-2"
+                    >
+                      Ismingiz
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      id="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      className="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-4 py-3 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all"
+                    />
                   </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* FAQ Section */}
-          <div className="bg-white rounded-2xl shadow-lg p-8 mb-16">
-            <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">
-              ❓ Ko'p So'raladigan Savollar
-            </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {faqs.map((faq, index) => (
-                <div key={index} className="bg-gray-50 p-6 rounded-xl">
-                  <h3 className="font-semibold text-gray-800 mb-3">
-                    {faq.question}
-                  </h3>
-                  <p className="text-gray-600 text-sm">{faq.answer}</p>
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-slate-300 mb-2"
+                    >
+                      Email Manzilingiz
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-4 py-3 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all"
+                    />
+                  </div>
                 </div>
-              ))}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label
+                      htmlFor="service"
+                      className="block text-sm font-medium text-slate-300 mb-2"
+                    >
+                      Xizmat Turi
+                    </label>
+                    <select
+                      name="service"
+                      id="service"
+                      value={formData.service}
+                      onChange={handleChange}
+                      className="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-4 py-3 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all appearance-none"
+                    >
+                      <option>Web Development</option>
+                      <option>Mobile Development</option>
+                      <option>UI/UX Design</option>
+                      <option>Telegram Bot</option>
+                      <option>Boshqa</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="budget"
+                      className="block text-sm font-medium text-slate-300 mb-2"
+                    >
+                      Byudjet (ixtiyoriy)
+                    </label>
+                    <input
+                      type="text"
+                      name="budget"
+                      id="budget"
+                      value={formData.budget}
+                      onChange={handleChange}
+                      className="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-4 py-3 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label
+                    htmlFor="subject"
+                    className="block text-sm font-medium text-slate-300 mb-2"
+                  >
+                    Mavzu
+                  </label>
+                  <input
+                    type="text"
+                    name="subject"
+                    id="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-4 py-3 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-medium text-slate-300 mb-2"
+                  >
+                    Xabar
+                  </label>
+                  <textarea
+                    name="message"
+                    id="message"
+                    rows="5"
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-4 py-3 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all"
+                  ></textarea>
+                </div>
+                <div>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full group relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-purple-600 to-cyan-500 text-white px-10 py-4 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-purple-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {loading ? (
+                      <>
+                        <svg
+                          className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        Yuborilmoqda...
+                      </>
+                    ) : (
+                      <>
+                        <span className="group-hover:animate-bounce">🚀</span>
+                        Xabarni Yuborish
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+              {success && (
+                <div className="mt-6 text-center bg-green-500/20 border border-green-500 text-green-300 px-4 py-3 rounded-lg">
+                  {success}
+                </div>
+              )}
+              {error && (
+                <div className="mt-6 text-center bg-red-500/20 border border-red-500 text-red-300 px-4 py-3 rounded-lg">
+                  {error}
+                </div>
+              )}
             </div>
           </div>
-
-          {/* Map Section */}
-          <div className="bg-white rounded-2xl shadow-lg p-8 mb-16">
-            <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">
-              📍 Bizning Joylashuvimiz
-            </h2>
-
-            <div className="bg-gray-100 rounded-lg p-8 text-center">
-              <div className="text-4xl mb-4">🗺️</div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                Toshkent, O'zbekiston
-              </h3>
-              <p className="text-gray-600 mb-4">
-                Bizning ofisimiz Toshkent shahrining markazida joylashgan.
-                Offline uchrashuvlar uchun oldindan vaqt belgilashingiz kerak.
-              </p>
-              <a
-                href="https://maps.google.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-300"
-              >
-                🗺️ Xaritada Ko'rish
-              </a>
-            </div>
-          </div>
-
-          {/* Working Hours */}
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl text-white p-8 text-center">
-            <h2 className="text-2xl font-bold mb-6">⏰ Ish Vaqtlarim</h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div>
-                <h3 className="font-semibold mb-2">📅 Ish Kunlari</h3>
-                <p className="opacity-90">Dushanba - Juma</p>
-                <p className="opacity-90">09:00 - 18:00</p>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">📞 Tezkor Javob</h3>
-                <p className="opacity-90">Email: 2 soat ichida</p>
-                <p className="opacity-90">Telegram: 30 daqiqa</p>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">🚨 Shoshilinch</h3>
-                <p className="opacity-90">24/7 mavjud</p>
-                <p className="opacity-90">Qo'shimcha to'lov bilan</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        </section>
       </div>
+      <style jsx global>{`
+        .bg-grid-blue-500\/10::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background-image: linear-gradient(to right, rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+          background-size: 40px 40px;
+        }
+
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        @keyframes fade-in-up {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes fade-in-left {
+          from {
+            opacity: 0;
+            transform: translateX(50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        @keyframes fade-in-right {
+          from {
+            opacity: 0;
+            transform: translateX(-50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        .animate-fade-in {
+          animation: fade-in 0.8s ease-out forwards;
+        }
+        .animate-fade-in-up {
+          animation: fade-in-up 0.6s ease-out forwards;
+        }
+
+        .animate-on-scroll {
+          opacity: 0;
+          transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .animate-on-scroll.animate-fade-in-left {
+          transform: translateX(50px);
+        }
+        .animate-on-scroll.animate-fade-in-right {
+          transform: translateX(-50px);
+        }
+
+        .animate-on-scroll.is-visible {
+          opacity: 1;
+          transform: translate(0, 0);
+        }
+
+        select {
+          background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+          background-position: right 0.5rem center;
+          background-repeat: no-repeat;
+          background-size: 1.5em 1.5em;
+          padding-right: 2.5rem;
+        }
+      `}</style>
     </>
   );
-}
+} 
