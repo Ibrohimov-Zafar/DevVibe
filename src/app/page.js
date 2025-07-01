@@ -230,7 +230,7 @@ function HomePageContent() {
               >
                 <span className="flex items-center justify-center gap-3">
                   <span className="text-2xl group-hover:animate-spin">💼</span>
-                  Ishlarimizni Ko'ring
+                  Ishlarimizni Ko\'ring
                 </span>
               </a>
             </div>
@@ -710,7 +710,7 @@ function HomePageContent() {
               Blog
             </div>
             <h2 className="text-5xl font-bold text-gray-900 dark:text-white mb-4">
-              Jamoamiz haqida so'nggi{" "}
+              Jamoamiz haqida so\'nggi{" "}
               <span className="text-green-600 dark:text-green-400">
                 Maqolalar
               </span>
