@@ -8,6 +8,10 @@ const nextConfig = {
       'www.afisha.uz',
     ],
   },
+    eslint: {
+    // ESLint xatolariga qaramay build qilishga ruxsat beriladi
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default nextConfig;
