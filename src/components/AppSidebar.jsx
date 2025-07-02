@@ -91,7 +91,7 @@ export default function AppSidebar() {
 
       // Redirect to login page
       toast.success("Muvaffaqiyatli chiqish qilindi");
-      router.push("/login");
+      router.push("/");
     } catch (error) {
       console.error("Logout error:", error);
       toast.error("Chiqishda xatolik yuz berdi");
