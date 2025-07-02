@@ -5,7 +5,7 @@ import { Globe } from "@/components/magicui/globe";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { LanguageProvider } from '@/context/LanguageContext';
+import { LanguageProvider } from "@/context/LanguageContext";
 
 function HomePageContent() {
   const [portfolios, setPortfolios] = useState([]);
@@ -13,23 +13,18 @@ function HomePageContent() {
   const [testimonials, setTestimonials] = useState([]);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [statsInView, setStatsInView] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     fetchPortfolios();
     fetchPosts();
     fetchTestimonials();
 
-    // Enhanced mouse movement tracking for 3D effects
-    const handleMouseMove = (e) => {
-      setMousePosition({
-        x: (e.clientX - window.innerWidth / 2) / 50,
-        y: (e.clientY - window.innerHeight / 2) / 50,
-      });
-    };
+    // Auto-trigger stats animation after component mounts
+    const timer = setTimeout(() => {
+      setStatsInView(true);
+    }, 1000);
 
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    return () => clearTimeout(timer);
   }, []);
 
   const fetchPortfolios = async () => {
@@ -101,49 +96,85 @@ function HomePageContent() {
 
   return (
     <>
-      <Navigation  />
+      <Navigation />
 
       {/* Revolutionary 3D Hero Section */}
       <section className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-purple-950 relative overflow-hidden pt-20">
         {/* Advanced 3D Background */}
         <div className="absolute inset-0 overflow-hidden">
-          {/* Floating 3D Elements */}
-          <div
-            className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-float-slow"
-            style={{
-              transform: `translate3d(${mousePosition.x * 2}px, ${mousePosition.y * 2}px, 0) rotateX(${mousePosition.y * 0.1}deg) rotateY(${mousePosition.x * 0.1}deg)`,
-            }}
-          ></div>
-          <div
-            className="absolute top-40 right-10 w-80 h-80 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full mix-blend-screen filter blur-3xl opacity-25 animate-float-medium"
-            style={{
-              transform: `translate3d(${-mousePosition.x * 1.5}px, ${mousePosition.y * 1.5}px, 0) rotateX(${-mousePosition.y * 0.1}deg) rotateY(${-mousePosition.x * 0.1}deg)`,
-            }}
-          ></div>
-          <div
-            className="absolute bottom-20 left-1/3 w-72 h-72 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-float-fast"
-            style={{
-              transform: `translate3d(${mousePosition.x}px, ${-mousePosition.y}px, 0) rotateX(${mousePosition.y * 0.15}deg) rotateY(${mousePosition.x * 0.15}deg)`,
-            }}
-          ></div>
+          {/* Floating 3D Elements with automatic animations */}
+          <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-float-slow"></div>
+          <div className="absolute top-40 right-10 w-80 h-80 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full mix-blend-screen filter blur-3xl opacity-25 animate-float-medium"></div>
+          <div className="absolute bottom-20 left-1/3 w-72 h-72 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-float-fast"></div>
 
           {/* Geometric Shapes */}
           <div className="absolute top-1/4 right-1/4 w-32 h-32 border border-cyan-400/30 rotate-45 animate-spin-slow"></div>
           <div className="absolute bottom-1/3 left-1/4 w-24 h-24 border border-purple-400/30 rotate-12 animate-pulse"></div>
 
-          {/* Particle Effect */}
-          {[...Array(50)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 bg-white rounded-full animate-twinkle opacity-30"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 5}s`,
-                animationDuration: `${2 + Math.random() * 3}s`,
-              }}
-            ></div>
-          ))}
+          {/* Enhanced Star Field */}
+          <div className="absolute inset-0 animate-rotate-slow">
+            {[...Array(40)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute w-1 h-1 bg-white rounded-full animate-twinkle"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 5}s`,
+                  animationDuration: `${2 + Math.random() * 3}s`,
+                }}
+              ></div>
+            ))}
+          </div>
+
+          <div className="absolute inset-0 animate-rotate-reverse">
+            {[...Array(30)].map((_, i) => (
+              <div
+                key={`star-mid-${i}`}
+                className="absolute w-1.5 h-1.5 bg-cyan-300 rounded-full animate-pulse-star"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 4}s`,
+                  animationDuration: `${3 + Math.random() * 2}s`,
+                }}
+              ></div>
+            ))}
+          </div>
+
+          <div className="absolute inset-0 animate-rotate-slow-reverse">
+            {[...Array(20)].map((_, i) => (
+              <div
+                key={`star-big-${i}`}
+                className="absolute w-2 h-2 bg-purple-300 rounded-full animate-glow-star"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 6}s`,
+                  animationDuration: `${4 + Math.random() * 2}s`,
+                }}
+              ></div>
+            ))}
+          </div>
+
+          {/* Shooting Stars */}
+          <div className="absolute inset-0">
+            {[...Array(5)].map((_, i) => (
+              <div
+                key={`shooting-${i}`}
+                className="absolute animate-shooting-star"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 50}%`,
+                  animationDelay: `${i * 3 + Math.random() * 10}s`,
+                }}
+              >
+                <div className="w-0.5 h-0.5 bg-white rounded-full relative">
+                  <div className="absolute top-0 left-0 w-20 h-0.5 bg-gradient-to-r from-white via-white to-transparent transform -translate-x-full"></div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Enhanced Globe with 3D Effect */}
@@ -159,31 +190,28 @@ function HomePageContent() {
             <div className="inline-flex items-center gap-3 bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-xl border border-white/20 text-white px-8 py-4 rounded-full text-sm font-medium mb-12 shadow-2xl transform-gpu hover:scale-105 transition-all duration-500">
               <span className="text-2xl animate-wave">👋</span>
               <span className="font-light">Salom, Biz</span>
-              <span className="font-bold text-cyan-400">
-                DevVibe Jamoasi
-              </span>
+              <span className="font-bold text-cyan-400">DevVibe Jamoasi</span>
             </div>
 
-            {/* 3D Typography - Fixed for dark theme */}
+            {/* 3D Typography - with automatic animations */}
             <h1 className="text-7xl md:text-9xl font-black text-white mb-8 leading-none relative">
               <span
-                className="block transform-gpu text-white"
+                className="block transform-gpu text-white  "
                 style={{
-                  textShadow: "0 0 40px rgba(59, 130, 246, 0.5), 0 0 80px rgba(59, 130, 246, 0.3)",
-                  transform: `perspective(1000px) rotateX(${mousePosition.y * 0.05}deg) rotateY(${mousePosition.x * 0.05}deg)`,
+                  textShadow:
+                    "0 0 40px rgba(59, 130, 246, 0.5), 0 0 80px rgba(59, 130, 246, 0.3)",
                 }}
               >
                 DevVibe
               </span>
-              <span
-                className="block text-cyan-400 transform-gpu relative"
-                style={{
-                  transform: `perspective(1000px) rotateX(${-mousePosition.y * 0.05}deg) rotateY(${-mousePosition.x * 0.05}deg)`,
-                }}
-              >
+              <span className="block text-cyan-400 transform-gpu relative  ">
                 TEAMS
-                <div className="absolute -top-8 -right-12 text-4xl animate-float-fast">✨</div>
-                <div className="absolute -bottom-4 -left-8 text-3xl animate-bounce-slow">🚀</div>
+                <div className="absolute -top-8 -right-12 text-4xl animate-float-fast">
+                  ✨
+                </div>
+                <div className="absolute -bottom-4 -left-8 text-3xl animate-bounce-slow">
+                  🚀
+                </div>
               </span>
             </h1>
 
@@ -211,7 +239,9 @@ function HomePageContent() {
                 }}
               >
                 <span className="relative z-10 flex items-center justify-center gap-3">
-                  <span className="text-2xl group-hover:animate-bounce">🚀</span>
+                  <span className="text-2xl group-hover:animate-bounce">
+                    🚀
+                  </span>
                   Loyiha Boshlash
                   <div className="group-hover:translate-x-2 transition-transform text-xl">
                     →
@@ -230,7 +260,7 @@ function HomePageContent() {
               >
                 <span className="flex items-center justify-center gap-3">
                   <span className="text-2xl group-hover:animate-spin">💼</span>
-                  Ishlarimizni Ko\'ring
+                  Loyihalarimiz bilan tanishing{" "}
                 </span>
               </a>
             </div>
@@ -290,7 +320,10 @@ function HomePageContent() {
                         {stat.icon}
                       </div>
                       <div className="text-4xl md:text-5xl font-black text-white mb-2">
-                        <AnimatedCounter end={stat.value} suffix={stat.suffix} />
+                        <AnimatedCounter
+                          end={stat.value}
+                          suffix={stat.suffix}
+                        />
                       </div>
                       <div className="text-gray-300 font-bold text-lg">
                         {stat.label}
@@ -307,16 +340,6 @@ function HomePageContent() {
         </div>
 
         {/* Enhanced Scroll Indicator */}
-        <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2">
-          <div className="flex flex-col items-center animate-float-slow">
-            <div className="text-white/60 text-sm mb-2 font-light">
-              Pastga suring
-            </div>
-            <div className="w-8 h-14 border-2 border-white/30 rounded-full flex justify-center backdrop-blur-sm">
-              <div className="w-1 h-4 bg-white/60 rounded-full mt-3 animate-scroll-smooth"></div>
-            </div>
-          </div>
-        </div>
       </section>
 
       {/* Revolutionary Skills Section - Fixed for dark theme */}
@@ -335,7 +358,7 @@ function HomePageContent() {
             </div>
             <h2 className="text-6xl md:text-7xl font-black text-gray-900 dark:text-white mb-6">
               <span className="text-blue-600 dark:text-cyan-400">
-                 Professional Skills
+                Professional Skills
               </span>
             </h2>
             <p className="text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto font-light">
@@ -450,7 +473,10 @@ function HomePageContent() {
                             />
                           </linearGradient>
                           <filter id={`glow-${index}`}>
-                            <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                            <feGaussianBlur
+                              stdDeviation="3"
+                              result="coloredBlur"
+                            />
                             <feMerge>
                               <feMergeNode in="coloredBlur" />
                               <feMergeNode in="SourceGraphic" />
@@ -528,9 +554,7 @@ function HomePageContent() {
               Featured Projects
             </div>
             <h2 className="text-6xl md:text-7xl font-black text-white mb-6">
-              <span className="text-purple-400">
-                Portfolio Loyihalarimiz
-              </span>
+              <span className="text-purple-400">Portfolio Loyihalarimiz</span>
             </h2>
             <p className="text-2xl text-gray-300 max-w-3xl mx-auto font-light">
               Har bir loyiha - bu innovatsiya va kreativlikning uyg'unligi
@@ -644,7 +668,8 @@ function HomePageContent() {
                 Mijozlar Fikri
               </div>
               <h2 className="text-5xl font-bold mb-4">
-               Mijozlarimiz biz haqimizda Nima <span className="text-white">Deyishadi</span>
+                Mijozlarimiz biz haqimizda Nima{" "}
+                <span className="text-white">Deyishadi</span>
               </h2>
             </div>
 
@@ -710,13 +735,13 @@ function HomePageContent() {
               Blog
             </div>
             <h2 className="text-5xl font-bold text-gray-900 dark:text-white mb-4">
-              Jamoamiz haqida so\'nggi{" "}
+              Jamoamiz haqida yangi{" "}
               <span className="text-green-600 dark:text-green-400">
                 Maqolalar
               </span>
             </h2>
             <p className="text-xl text-gray-600 dark:text-slate-300 max-w-2xl mx-auto">
-              Texnologiya va dasturlash haqida foydali ma'lumotlar
+              Texnologiya va dasturlash haqida foydali faktlar
             </p>
           </div>
 
@@ -811,9 +836,7 @@ function HomePageContent() {
             <div className="text-6xl mb-4">🚀</div>
             <h2 className="text-4xl md:text-6xl font-bold mb-6 leading-tight text-white">
               Loyihangizni <br />
-              <span className="text-yellow-300">
-                Hayotga Keltiring!
-              </span>
+              <span className="text-yellow-300">Hayotga Keltiring!</span>
             </h2>
             <p className="text-xl md:text-2xl mb-8 opacity-90 leading-relaxed">
               Sizning g&apos;oyangizni professional web loyihaga aylantiramiz.
@@ -835,7 +858,7 @@ function HomePageContent() {
               className="group border-2 border-white text-white hover:bg-white hover:text-blue-600 px-10 py-5 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-3"
             >
               <span className="group-hover:animate-spin">👀</span>
-              Ishlarimni Ko&apos;ring
+              Ishlarimnizni Ko&apos;ring
             </a>
           </div>
 
@@ -845,18 +868,18 @@ function HomePageContent() {
               <div className="text-3xl mb-2">📧</div>
               <div className="font-semibold">Email</div>
               <div className="text-sm opacity-80 break-all">
-                ibragimovzafar001@gmail.com
+                developvibe@gmail.com
               </div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/20 transition-all duration-300">
               <div className="text-3xl mb-2">📱</div>
               <div className="font-semibold">Telefon</div>
-              <div className="text-sm opacity-80">+998 88 000 14 29</div>
+              <div className="text-sm opacity-80">+998 99 834 37 46</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/20 transition-all duration-300">
               <div className="text-3xl mb-2">💬</div>
               <div className="font-semibold">Telegram</div>
-              <div className="text-sm opacity-80">@zafaribragimov</div>
+              <div className="text-sm opacity-80">@developvibe</div>
             </div>
           </div>
         </div>
@@ -870,7 +893,7 @@ function HomePageContent() {
               <div className="flex items-center gap-3 mb-6">
                 <div className="text-3xl">💻</div>
                 <h3 className="text-2xl font-bold text-white">
-                  Zafar Ibragimov
+                  DevVibe Team
                 </h3>
               </div>
               <p className="text-gray-400 dark:text-slate-400 mb-6 leading-relaxed max-w-md">
@@ -942,7 +965,7 @@ function HomePageContent() {
                   <div>
                     <div className="font-medium">Email</div>
                     <div className="text-gray-400 dark:text-slate-400 text-sm">
-                      ibragimovzafar001@gmail.com
+                      developvibe@gmail.com
                     </div>
                   </div>
                 </li>
@@ -951,7 +974,7 @@ function HomePageContent() {
                   <div>
                     <div className="font-medium">Telefon</div>
                     <div className="text-gray-400 dark:text-slate-400 text-sm">
-                      +998 88 000 14 29
+                      +998 99 834 37 46
                     </div>
                   </div>
                 </li>
@@ -970,7 +993,7 @@ function HomePageContent() {
 
           <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 dark:text-slate-400 mb-4 md:mb-0">
-              &copy; 2025 Zafar Ibragimov. Barcha huquqlar himoyalangan.
+              &copy; 2025 DevVibe. Barcha huquqlar himoyalangan.
             </p>
             <div className="flex items-center gap-6">
               <a
@@ -1032,6 +1055,83 @@ function HomePageContent() {
           }
           100% {
             transform: rotate(360deg);
+          }
+        }
+
+        @keyframes rotate-slow {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+
+        @keyframes rotate-reverse {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(-360deg);
+          }
+        }
+
+        @keyframes rotate-slow-reverse {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(-360deg);
+          }
+        }
+
+        @keyframes pulse-star {
+          0%,
+          100% {
+            opacity: 0.3;
+            transform: scale(1);
+            box-shadow: 0 0 5px rgba(102, 204, 255, 0.5);
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1.5);
+            box-shadow: 0 0 15px rgba(102, 204, 255, 0.8),
+              0 0 25px rgba(102, 204, 255, 0.6);
+          }
+        }
+
+        @keyframes glow-star {
+          0%,
+          100% {
+            opacity: 0.4;
+            transform: scale(1);
+            box-shadow: 0 0 8px rgba(216, 180, 254, 0.6);
+          }
+          33% {
+            opacity: 0.8;
+            transform: scale(1.3);
+            box-shadow: 0 0 20px rgba(216, 180, 254, 0.9),
+              0 0 30px rgba(216, 180, 254, 0.7);
+          }
+          66% {
+            opacity: 0.6;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(216, 180, 254, 0.8),
+              0 0 20px rgba(216, 180, 254, 0.6);
+          }
+        }
+
+        @keyframes shooting-star {
+          0% {
+            transform: translateX(0) translateY(0) rotate(315deg);
+            opacity: 1;
+          }
+          70% {
+            opacity: 1;
+          }
+          100% {
+            transform: translateX(1000px) translateY(1000px) rotate(315deg);
+            opacity: 0;
           }
         }
 
@@ -1105,6 +1205,24 @@ function HomePageContent() {
         }
         .animate-spin-slow {
           animation: spin-slow 20s linear infinite;
+        }
+        .animate-rotate-slow {
+          animation: rotate-slow 80s linear infinite;
+        }
+        .animate-rotate-reverse {
+          animation: rotate-reverse 120s linear infinite;
+        }
+        .animate-rotate-slow-reverse {
+          animation: rotate-slow-reverse 180s linear infinite;
+        }
+        .animate-pulse-star {
+          animation: pulse-star 3s ease-in-out infinite;
+        }
+        .animate-glow-star {
+          animation: glow-star 4s ease-in-out infinite;
+        }
+        .animate-shooting-star {
+          animation: shooting-star 6s linear infinite;
         }
         .animate-pulse-slow {
           animation: pulse-slow 4s ease-in-out infinite;

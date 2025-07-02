@@ -14,8 +14,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Portfolio Blog - Modern Web Development",
-  description: "Professional portfolio va blog platformasi",
+  title: "DevVibe Team",
+  description: "DevVibe - Professional Web Development Team",
+  icons: {
+    icon: "/dev.png",  
+  },
 };
 
 export default function RootLayout({ children }) {

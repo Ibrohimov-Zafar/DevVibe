@@ -132,7 +132,7 @@ export default function ContactPage() {
                       href="mailto:ibragimovzafar001@gmail.com"
                       className="text-slate-300 hover:text-cyan-400 transition-colors"
                     >
-                      ibragimovzafar001@gmail.com
+                      developvibe@gmail.com
                     </a>
                   </div>
                 </div>
@@ -146,7 +146,7 @@ export default function ContactPage() {
                       href="tel:+998880001429"
                       className="text-slate-300 hover:text-cyan-400 transition-colors"
                     >
-                      +998 88 000 14 29
+                      +998 99 834 37 46
                     </a>
                   </div>
                 </div>
@@ -157,12 +157,12 @@ export default function ContactPage() {
                   <div>
                     <h3 className="text-xl font-semibold">Telegram</h3>
                     <a
-                      href="https://t.me/zafaribragimov"
+                      href="https://t.me/developvibe"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-slate-300 hover:text-cyan-400 transition-colors"
                     >
-                      @zafaribragimov
+                      @developvibe
                     </a>
                   </div>
                 </div>
