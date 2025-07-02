@@ -36,17 +36,44 @@ export async function POST(request) {
   try {
     const client = await pool.connect();
     try {
-      const { name, icon } = await request.json();
+      const body = await request.json();
+      const { 
+        name, 
+        icon, 
+        level = 50, 
+        category = 'Frontend', 
+        description = '', 
+        experience = '', 
+        projects_count = 0,
+        color = 'from-blue-400 to-blue-600',
+        featured = false
+      } = body;
+      
       if (!name || !icon) {
         return NextResponse.json(
-          { success: false, error: 'Barcha maydonlar to\'ldirilishi shart' },
+          { success: false, error: 'Barcha majburiy maydonlar to\'ldirilishi shart' },
           { status: 400 }
         );
       }
+      
       const result = await client.query(
-        'INSERT INTO skills (name, icon, user_id) VALUES ($1, $2, 1) RETURNING *',
-        [name, icon]
+        `INSERT INTO skills 
+        (name, icon, level, category, description, experience, projects_count, color, featured) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) 
+        RETURNING *`,
+        [
+          name, 
+          icon, 
+          parseInt(level), 
+          category, 
+          description, 
+          experience, 
+          parseInt(projects_count), 
+          color, 
+          featured
+        ]
       );
+      
       return NextResponse.json({ success: true, data: result.rows[0] }, { status: 201 });
     } catch (error) {
       console.error('Error creating skill:', error);

@@ -262,8 +262,8 @@ export default function SkillsPage() {
                                         type="number"
                                         placeholder="Loyihalar soni"
                                         className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:border-slate-600 dark:text-white"
-                                        value={formData.projects_count}
-                                        onChange={(e) => setFormData({...formData, projects_count: parseInt(e.target.value)})}
+                                        value={formData.projects_count || 0}
+                                        onChange={(e) => setFormData({...formData, projects_count: e.target.value === '' ? 0 : parseInt(e.target.value)})}
                                     />
                                 </div>
                                 

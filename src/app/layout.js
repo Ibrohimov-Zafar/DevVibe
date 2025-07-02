@@ -17,7 +17,7 @@ export const metadata = {
   title: "DevVibe Team",
   description: "DevVibe - Professional Web Development Team",
   icons: {
-    icon: "/dev.png",  
+    icon: "/devVibe.svg",  
   },
 };
 

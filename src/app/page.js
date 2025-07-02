@@ -934,7 +934,7 @@ function HomePageContent() {
               </h4>
               <ul className="space-y-3">
                 {[
-                  { name: "Men Haqimda", href: "/pages/about" },
+                  { name: "Biz Haqimizda", href: "/pages/about" },
                   { name: "Xizmatlar", href: "/pages/services" },
                   { name: "Portfolio", href: "/pages/portfolio" },
                   { name: "Blog", href: "/pages/blog" },
