@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Home,
   PenTool,
@@ -12,9 +13,12 @@ import {
   Zap,
   MessageSquare,
   TrendingUp,
+  LogOut,
 } from "lucide-react";
-import { useProfile } from "@/context/ProfileContext"; // useEffect va useState o'rniga buni import qilamiz
+import { useProfile } from "@/context/ProfileContext";
 import Image from "next/image";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 const items = [
   {
@@ -70,7 +74,31 @@ const items = [
 ];
 
 export default function AppSidebar() {
-  const { profile } = useProfile(); // Ma'lumotni context'dan olamiz
+  const { profile } = useProfile();
+  const router = useRouter();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+
+      // Clear auth token from localStorage
+      localStorage.removeItem("auth_token");
+      localStorage.removeItem("user_data");
+
+      // Add a small delay for better UX
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      // Redirect to login page
+      toast.success("Muvaffaqiyatli chiqish qilindi");
+      router.push("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Chiqishda xatolik yuz berdi");
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
 
   return (
     <aside className="fixed top-0 left-0 h-screen w-64 bg-gradient-to-b from-white to-gray-50 dark:bg-slate-900 border-r border-gray-200 dark:border-slate-700 shadow-lg transition-all duration-300 md:block hidden z-40">
@@ -99,9 +127,9 @@ export default function AppSidebar() {
           </ul>
         </nav>
         <div className="p-4 border-t border-gray-200 dark:border-slate-700">
-          <div className="flex items-center gap-3 bg-gradient-to-r from-blue-50 to-purple-50 dark:bg-slate-800/50 rounded-lg p-3 border dark:border-slate-600">
+          <div className="flex items-center gap-3 bg-gradient-to-r from-blue-50 to-purple-50 dark:bg-slate-800/50 rounded-lg p-3 border dark:border-slate-600 mb-3">
             <Image
-              src={profile?.avatar || '/zafar.jpg'}
+              src={profile?.avatar || "/dev.png"}
               alt="Avatar"
               width={40}
               height={40}
@@ -109,13 +137,23 @@ export default function AppSidebar() {
             />
             <div>
               <p className="text-sm text-gray-800 dark:text-slate-200 font-medium">
-                {profile ? profile.name : 'Yuklanmoqda...'}
+                {profile ? profile.name : "Yuklanmoqda..."}
               </p>
               <p className="text-xs text-gray-500 dark:text-slate-400 mt-1">
-                {profile ? profile.email : '...'}
+                {profile ? profile.email : "..."}
               </p>
             </div>
           </div>
+
+          {/* Logout Button */}
+          <button
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            className="w-full flex items-center justify-center gap-2 py-2 px-4 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg transition-colors duration-300"
+          >
+            <LogOut size={16} />
+            <span>{isLoggingOut ? "Chiqilmoqda..." : "Tizimdan Chiqish"}</span>
+          </button>
         </div>
       </div>
     </aside>
